@@ -12,6 +12,27 @@ LinkedList* createLinkedList()
 	return pLinkedList;	
 }
 
+void insertFirst(LinkedList* pList, void* pEntry)
+{
+	LinkedListNode* pNode = (LinkedListNode*) malloc (sizeof(LinkedListNode));
+	pNode->pData = pEntry;
+	pNode->pNext = NULL;
+
+	if (pList->pHead == NULL)
+	{
+		assert(pList->pTail == NULL && pList->iSize == 0);		
+		pList->pTail = pNode;
+	}
+	else
+	{
+		assert(pList->pTail && pList->iSize > 0);	
+		pNode->pNext = pList->pHead;
+	}
+
+	pList->pHead = pNode;
+	(pList->iSize)++;
+}
+
 void insertLast(LinkedList* pList, void* pEntry)
 {
 	/* Create a new node */
@@ -36,6 +57,29 @@ void insertLast(LinkedList* pList, void* pEntry)
 	
 }
 
+
+void* removeFirst(LinkedList* pList)
+{
+	LinkedListNode* pCur = pList->pHead;
+	void* pRet = pList->pHead->pData;
+	if(pCur->pNext == NULL)
+	{
+		pList->pHead->pData = NULL;
+        pList->pHead->pNext = NULL;
+        free(pList->pHead);
+		pList->pTail->pData = NULL;
+        pList->pTail->pNext = NULL;
+        free(pList->pTail);
+	}
+	else
+	{
+		pList->pHead = pList->pHead->pNext;
+	}
+
+	
+	return pRet;
+}
+
 void* removeLast(LinkedList* pList) 
 { 
 	LinkedListNode* pCur = pList->pHead;
@@ -56,7 +100,7 @@ void* removeLast(LinkedList* pList)
             pList->pTail->pNext = NULL;
             free(pList->pTail);
             pList->pTail = pCur;
-
+			pList->pTail->pNext = NULL;
 
 
 			(pList->iSize)--;
@@ -77,6 +121,7 @@ void* removeLast(LinkedList* pList)
             free(pList->pTail);
             pList->pTail = pList->pHead;
             pList->pTail = NULL;
+            pList->pHead = NULL;
 
 
 
@@ -120,8 +165,7 @@ void freeLinkedList(LinkedList* pList, listFunc funcPtr)
 		
 		/* clean pCur */
 		(*funcPtr)(pCur->pData);
-		pCur->pData = NULL;
-		pCur->pNext = NULL;
+		(*funcPtr)(pCur->pNext);
 		free(pCur);
 		
 		/* set pCur = pTemp */

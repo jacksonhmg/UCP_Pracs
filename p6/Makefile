@@ -1,6 +1,6 @@
 CC = gcc -g
 CFLAGS = -Wall -pedantic -ansi
-OBJ = main.o LinkedList.o
+OBJ = main.o LinkedList.o LinkedListTest.o
 EXEC = prog
 
 
@@ -12,6 +12,9 @@ main.o : main.c LinkedList.h
 
 LinkedList.o : LinkedList.c LinkedList.h
 	$(CC) $(CFLAGS) -c LinkedList.c
+
+LinkedListTest.o : LinkedListTest.c LinkedList.h
+	$(CC) $(CFLAGS) -c LinkedListTest.c
 
 clean:
 	rm -f $(EXEC) $(OBJ)

@@ -16,45 +16,9 @@
 
 #include "LinkedList.h"
 
-/* DO NOT CHANGE ANY OF THESE DEFINES */
-   #define FALSE 0
-   #define TRUE !FALSE
-   #define RED "\033[0;31m"
-   #define GREEN "\033[0;32m"
-   #define RESET "\033[0m"
-
-   #define STR_MATCH(a,b) (strncmp((a),(b),strlen(b)+1) == 0)
-
-   #define TEST_COUNT 8
-
-   #define STR1 "Hello"
-   #define STR2 "World"
-   #define STR3 "Steve"
-   #define STR4 "Bob"
-   #define STR5 "Alice"
-/* END OF THAT BLOCK */
-
-/* Change these if you have named your Linked Lists structs something weird :P */
-   #define LIST LinkedList
-   #define NODE LinkedListNode
-   #define HEAD head
-   #define TAIL tail
-   #define DATA data
-   #define COUNT count
-/* END OF THAT BLOCK*/
-
-/* Uncomment this define if you did a double ended array and want to test that */
-   /* #define DOUBLE_ENDED */
-   /* #define DOUBLE_LINKED */
-/* END OF THAT BLOCK*/
-
 static char* createString(char* input);
 static void printTest(char* input);
 static void printFailure(char* format, ...);
-void printString(void* data);
-void freeString(void* data);
-
-typedef int(*testFunc)(LIST* list);
 
 int checkHead(LIST* list, char* input)
 {  
@@ -109,16 +73,16 @@ int checkTail(LIST* list, char* input)
       }
    #else
       NODE* current = list->HEAD;
-      while(current->next != NULL)
+      while(current->pNext != NULL)
       {
-         current = current->next;
+         current = current->pNext;
       }
       
       if(!STR_MATCH((char*)(current->DATA), input))
       {
          printFailure("Tail data %s != %s", (char*)(current->DATA), input);
       }
-      else if(current->next != NULL)
+      else if(current->pNext != NULL)
       {
          printFailure("tail->next is not NULL");
       }
@@ -132,14 +96,14 @@ int checkTail(LIST* list, char* input)
    return success;
 }
 
-int checkCount(LIST* list, int count)
+int checkiSize(LIST* list, int iSize)
 {
    int success = TRUE;
 
-   if(list->count != count)
+   if(list->iSize != iSize)
    {
       success = FALSE;
-      printFailure("List Couint (%d) != %d", list->count, count);
+      printFailure("List Couint (%d) != %d", list->iSize, iSize);
    }
 
    return success;
@@ -169,56 +133,56 @@ LIST* testCreation()
       list = NULL;
    }
    #endif
-   else if (list->count != 0)
+   else if (list->iSize != 0)
    {
-      printFailure("List count (%d) != %d", list->count, 0);
+      printFailure("List iSize (%d) != %d", list->iSize, 0);
       list = NULL;
    }
 
    return list;
 }
 
-int testInsertStart1(LIST* list)
+int testinsertFirst1(LIST* list)
 {
    int success = FALSE;
    char* str = createString(STR2);
 
    printTest("Insert First #1");
-   insertStart(list, str);
+   insertFirst(list, str);
 
    success = checkHead(list, str) && 
                checkTail(list, str) &&
-               checkCount(list,1);
+               checkiSize(list,1);
    
    return success;
 }
 
-int testInsertStart2(LIST* list)
+int testinsertFirst2(LIST* list)
 {
    int success = FALSE;
    char* str = createString(STR1);
 
    printTest("Insert First #2");
-   insertStart(list, str);
+   insertFirst(list, str);
 
    success = checkHead(list, str) && 
                checkTail(list, STR3) &&
-               checkCount(list, 3);
+               checkiSize(list, 3);
 
    return success;
 }
 
-int testInsertStart3(LIST* list)
+int testinsertFirst3(LIST* list)
 {
    int success = FALSE;
    char* str = createString(STR5);
 
    printTest("Insert First #3");
-   insertStart(list, str);
+   insertFirst(list, str);
 
    success = checkHead(list, str) && 
                checkTail(list, STR3) &&
-               checkCount(list, 3);
+               checkiSize(list, 3);
 
    return success;
 }
@@ -233,7 +197,7 @@ int testInsertLast1(LIST* list)
    insertLast(list, str);
 
    success = checkTail(list, str) && 
-               checkCount(list, 2);
+               checkiSize(list, 2);
 
    return success;
 }
@@ -248,23 +212,23 @@ int testInsertLast2(LIST* list)
    insertLast(list, str);
 
    success = checkTail(list, str) && 
-               checkCount(list, 4);
+               checkiSize(list, 4);
 
    return success;
 }
 
-int testRemoveStart(LIST* list)
+int testremoveLast(LIST* list)
 {
    int success;
    char* removed;
    
    printTest("Remove First");
 
-   removed = removeStart(list);
+   removed = removeLast(list);
 
-   success = (strncmp(removed, STR1, strlen(STR1)+1) == 0) && 
+`1    success = (strncmp(removed, STR1, strlen(STR1)+1) == 0) && 
                checkHead(list, STR2) && 
-               checkCount(list, 3);
+               checkiSize(list, 3);
 
    /* Only success if both checks are passed */
    free(removed);
@@ -283,7 +247,7 @@ int testRemoveLast(LIST* list)
 
    success = (strncmp(removed, STR4, strlen(STR4)+1) == 0) && 
                checkTail(list, STR3) && 
-               checkCount(list, 2);
+               checkiSize(list, 2);
 
    free(removed);
 
@@ -292,7 +256,7 @@ int testRemoveLast(LIST* list)
 
 void testPrintList(LIST* list)
 {
-   printf(" Count: %d\n", list->COUNT);
+   printf(" iSize: %d\n", list->iSize);
    printLinkedList(list, &printString);
 }
 
@@ -348,19 +312,19 @@ int main(int argc, char const *argv[])
    LIST* list = NULL;
    char* color = RED;
    int ii;
-   int passCount = 0;
+   int passiSize = 0;
    int success = TRUE;
 
    testFunc currentTest = NULL;
 
    testFunc tests[TEST_COUNT] = {
-      &testInsertStart1,
+      &testinsertFirst1,
       &testInsertLast1,
-      &testInsertStart2,
+      &testinsertFirst2,
       &testInsertLast2,
-      &testRemoveStart,
+      &testremoveLast,
       &testRemoveLast,
-      &testInsertStart3,
+      &testinsertFirst3,
       &testFreeList,
    };
 
@@ -370,7 +334,7 @@ int main(int argc, char const *argv[])
    {  
       printf(GREEN "PASSED\n" RESET );
       ii = 0;
-      passCount++;
+      passiSize++;
       while(ii < TEST_COUNT && success == TRUE)
       {  
          currentTest = tests[ii];
@@ -379,7 +343,7 @@ int main(int argc, char const *argv[])
          if(success)
          {
             printf(GREEN "PASSED\n" RESET );
-            passCount++;
+            passiSize++;
          }
          else
          {
@@ -391,12 +355,12 @@ int main(int argc, char const *argv[])
       }
    }
    
-   if (passCount == TEST_COUNT+1)
+   if (passiSize == TEST_COUNT+1)
    {
       color = GREEN;
    }
 
-   printf("\nTest passed: %s %d/%d\n\n" RESET ,color, passCount, TEST_COUNT+1);
+   printf("\nTest passed: %s %d/%d\n\n" RESET ,color, passiSize, TEST_COUNT+1);
 
    return 0;
 }
