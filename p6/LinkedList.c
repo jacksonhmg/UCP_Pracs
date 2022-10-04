@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <stdio.h>
 #include <assert.h>
 #include "LinkedList.h"
 
@@ -75,6 +76,7 @@ void* removeFirst(LinkedList* pList)
 	{
 		pList->pHead = pList->pHead->pNext;
 	}
+	(pList->iSize)--;
 
 	
 	return pRet;
@@ -95,7 +97,7 @@ void* removeLast(LinkedList* pList)
 			/* TODO: free pTail */
 			/* TODO: set pTail = pCur */
 			/* TODO: set pTail->pNext = NULL */
-            void* pRet = pList->pTail->pData;
+            pRet = pList->pTail->pData;
             pList->pTail->pData = NULL;
             pList->pTail->pNext = NULL;
             free(pList->pTail);
@@ -118,8 +120,8 @@ void* removeLast(LinkedList* pList)
             void* pRet = pList->pTail->pData;
             pList->pTail->pData = NULL;
             pList->pTail->pNext = NULL;
-            free(pList->pTail);
-            pList->pTail = pList->pHead;
+			free(pList->pTail);
+            /*pList->pHead = pList->pTail;*/
             pList->pTail = NULL;
             pList->pHead = NULL;
 
@@ -129,14 +131,14 @@ void* removeLast(LinkedList* pList)
 			pCur = NULL;
 			
 			assert(pList->pTail == NULL && pList->pHead == NULL && pList->iSize == 0);
-			
+
 		}
 		else
 		{
 			pCur = pCur->pNext;
 		}		
 	}
-	
+
 	return pRet;
 }
 

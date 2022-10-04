@@ -224,9 +224,9 @@ int testremoveLast(LIST* list)
    
    printTest("Remove First");
 
-   removed = removeLast(list);
+   removed = removeFirst(list);
 
-`1    success = (strncmp(removed, STR1, strlen(STR1)+1) == 0) && 
+   success = (strncmp(removed, STR1, strlen(STR1)+1) == 0) && 
                checkHead(list, STR2) && 
                checkiSize(list, 3);
 
@@ -243,7 +243,7 @@ int testRemoveLast(LIST* list)
    char* removed;
    printTest("Remove Last");
 
-   removed = removeLast(list);
+   removed = (char*)removeLast(list);
 
    success = (strncmp(removed, STR4, strlen(STR4)+1) == 0) && 
                checkTail(list, STR3) && 
