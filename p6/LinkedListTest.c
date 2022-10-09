@@ -217,7 +217,7 @@ int testInsertLast2(LIST* list)
    return success;
 }
 
-int testremoveLast(LIST* list)
+int testremoveFirst(LIST* list)
 {
    int success;
    char* removed;
@@ -307,7 +307,7 @@ static char* createString(char* input)
    return str;
 }
 
-int main(int argc, char const *argv[])
+/*int main(int argc, char const *argv[])
 {
    LIST* list = NULL;
    char* color = RED;
@@ -322,7 +322,7 @@ int main(int argc, char const *argv[])
       &testInsertLast1,
       &testinsertFirst2,
       &testInsertLast2,
-      &testremoveLast,
+      &testremoveFirst,
       &testRemoveLast,
       &testinsertFirst3,
       &testFreeList,
@@ -363,4 +363,4 @@ int main(int argc, char const *argv[])
    printf("\nTest passed: %s %d/%d\n\n" RESET ,color, passiSize, TEST_COUNT+1);
 
    return 0;
-}
+}*/

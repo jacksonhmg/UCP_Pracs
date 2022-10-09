@@ -63,21 +63,27 @@ void* removeFirst(LinkedList* pList)
 {
 	LinkedListNode* pCur = pList->pHead;
 	void* pRet = pList->pHead->pData;
-	if(pCur->pNext == NULL)
+	if(pCur)
 	{
-		pList->pHead->pData = NULL;
-        pList->pHead->pNext = NULL;
-        free(pList->pHead);
-		pList->pTail->pData = NULL;
-        pList->pTail->pNext = NULL;
-        free(pList->pTail);
+		if(pCur->pNext == NULL)
+		{
+			pList->pHead->pData = NULL;
+			pList->pHead->pNext = NULL;
+			free(pList->pHead);
+			pList->pHead = NULL;
+			pList->pTail = NULL;
+		}
+		else
+		{
+			pCur = pList->pHead->pNext;
+			pList->pHead->pData = NULL;
+			pList->pHead->pNext = NULL;
+			free(pList->pHead);
+			pList->pHead = pCur;
+		}
+		(pList->iSize)--;
+		pCur = NULL;
 	}
-	else
-	{
-		pList->pHead = pList->pHead->pNext;
-	}
-	(pList->iSize)--;
-
 	
 	return pRet;
 }
@@ -166,8 +172,12 @@ void freeLinkedList(LinkedList* pList, listFunc funcPtr)
 		pTemp = pCur->pNext;
 		
 		/* clean pCur */
+		/*(*funcPtr)(pCur->pData);
+		(*funcPtr)(pCur->pNext);*/
+
 		(*funcPtr)(pCur->pData);
-		(*funcPtr)(pCur->pNext);
+		pCur->pData = NULL;
+		pCur->pNext = NULL;
 		free(pCur);
 		
 		/* set pCur = pTemp */

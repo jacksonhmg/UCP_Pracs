@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include "LinkedList.h"
 
 void printData(void* pData)
@@ -8,30 +9,32 @@ void printData(void* pData)
 
 void freeData(void* pData)
 {
-	pData = NULL;
+	free(pData);
 }
 
-/*int main()
+int main()
 {
 	LinkedList* pList = createLinkedList();
 	int iData1 = 10, iData2 = 20;
 	
-	insertLast(pList, &iData1);
+	insertFirst(pList, &iData1);
 	insertLast(pList, &iData2);
-	
+   insertFirst(pList, &iData1);
+   insertLast(pList, &iData2);
+
 	printLinkedList(pList, &printData);
 
-    removeLast(pList);
-    printLinkedList(pList, &printData);
+   removeFirst(pList);
+   printLinkedList(pList, &printData);
     
-	removeLast(pList);
-
+   removeLast(pList);
+   insertFirst(pList, &iData1);
 	freeLinkedList(pList, &freeData);
 
     
 	
 	return 0;
-}*/
+}
 /*int main(int argc, char const *argv[])
 {
    LIST* list = NULL;
