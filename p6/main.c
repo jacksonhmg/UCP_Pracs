@@ -12,7 +12,7 @@ void freeData(void* pData)
 	free(pData);
 }
 
-int main()
+/*int main()
 {
 	LinkedList* pList = createLinkedList();
 	int iData1 = 10, iData2 = 20;

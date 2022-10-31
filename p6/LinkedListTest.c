@@ -307,7 +307,7 @@ static char* createString(char* input)
    return str;
 }
 
-/*int main(int argc, char const *argv[])
+int main(int argc, char const *argv[])
 {
    LIST* list = NULL;
    char* color = RED;
@@ -363,4 +363,4 @@ static char* createString(char* input)
    printf("\nTest passed: %s %d/%d\n\n" RESET ,color, passiSize, TEST_COUNT+1);
 
    return 0;
-}*/
+}
